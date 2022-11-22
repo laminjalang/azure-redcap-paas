@@ -293,7 +293,7 @@ resource webSiteName_web 'Microsoft.Web/sites/sourcecontrols@2015-08-01' = {
   ]
 }
 
-resource serverName 'Microsoft.DBforMySQL/servers@2017-12-01-preview' = {
+resource serverName 'Microsoft.DBforMySQL/flexibleServers' = {
   location: resourceGroup().location
   name: serverName_var
   tags: {
