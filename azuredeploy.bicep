@@ -2,7 +2,7 @@
 param siteName string
 
 @description('Stack settings')
-param linuxFxVersion string = 'php|7.4'
+param linuxFxVersion string = 'php|8.1.2'
 
 @description('Database administrator login name')
 @minLength(1)
