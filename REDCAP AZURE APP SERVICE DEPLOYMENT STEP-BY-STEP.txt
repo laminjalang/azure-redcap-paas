@@ -1,0 +1,33 @@
+REDCAP DEPLOYMENT INTO AZURE APP SERVICE USING ARM TEMPLATE MASTER BRANCH
+
+1. CLICK ON DEPLOY BUTTON, SUPPLY NEEDED INFO AND CHOOSE UNIQUE NAME FOR WEBSITE 
+2. VALIDATE AND CREATE
+3. AFTER DEPLOYMENT IS DONE, MAYBE FAILED OR SUCCESS, EITHER CASE, GO TO APP SERVICE
+4. BROWSER TO URL OF REDCAP ON APP SERVICE, IF ERROR SAYS 
+
+"CRITICAL ERROR: REDCap server is offline!
+For unknown reasons, REDCap cannot communicate with its database server, which may be offline. Please contact your local REDCap administrator to inform them of this issue immediately. If you are a REDCap administrator, then please see this additional information. We are sorry for any inconvenience."
+5. CLICK ON ADDITIONAL INFO---
+6. ON APP SERVICE,UNDER DEVELOPMENT TOOLS,  CLICK ON ADVANCED TOOL>GO, CLICK ON ARROW AT DEBUG CONSOLE, SELECT POWERSHELL
+7. NAVIGATE TO \home\site\wwwroot/database.php] and put in your db login info ($hostname, $db, $username, $password) by clicking on the pencil button to edit the database.php file and save.
+8. refresh the redcap url and another error may appear like this..
+"ERROR: Could not find the "redcap_config" database table in the MySQL database named "redcapdevstage_db"!
+
+It looks like the REDCap database tables were not created during installation, which means that you may still need to complete the installation. If you did complete the installation, then you may have accidentally created the REDCap database tables in the wrong MySQL database (if so, please check if they exist in the "redcapdevstage_db" database).""
+9. click on the installation link in that error for a guided installation of redcap
+10. seems like you need to create a mysql database/schema. And User if if not already created.
+11. download mysql workbench and connect to your mysql on azure from your local computer( make sure you allow connection from your current ip -click on mysql connection security on azure portal to allow this)
+12. go back to installation wizard and generate sql install script at the bottom of the page.
+copy the mysql script and paste it on a new query window on workbend and execute.This will execute some 747 lines of sql code.
+13. go back to the continue on the configuration check.
+14. if cron has not started, follow the instruction.. faster way is to navigate to your redcap url followed by /cron.php. That will likely start the cron job.
+15. click back on the configuration check to continue reviewing the status of.. take care of any red text by just following the wizard.
+16. change the file upload location to azure blob.go to redcap url, control panel>unser system configuration>file upload settings
+if using azure blob storage. 
+Setup Instructions:
+1) Log in to Azure at https://portal.azure.com/
+2) Go to 'Storage Accounts' on the left-hand menu, and create a new storage account (this 'name' will be your 'Azure storage account name' in REDCap).
+3) Under that storage account, click the 'Access keys' option on the menu, and copy the first 'Key' value (this will be your 'Azure storage account key').
+4) Under that storage account, click the 'Overview' option on the menu, and then under 'Services' click 'Blobs'. Then click '+Container' to create a new container (this will be your 'Azure storage container').
+17. after redcap is up and running, if you want to migrate your mysql single server to mysql flex server, use guide here
+https://learn.microsoft.com/en-us/azure/dms/tutorial-mysql-azure-single-to-flex-online-portal
